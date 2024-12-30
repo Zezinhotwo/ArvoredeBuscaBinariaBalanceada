@@ -1,48 +1,64 @@
 "use strict";
 class NodeQueue {
     constructor(data) {
-        this.data = data;
-        this.right = null;
         this.left = null;
+        this.right = null;
+        this.data = data;
     }
 }
 class Tree {
     constructor(array) {
-        this.array = array;
-        this.root = this.buildTree();
+        this.array = array.filter((elemento, indice) => array.indexOf(elemento) === indice);
+        this.root = this.buildTree(0, this.array.length - 1);
     }
-    buildTree() {
-        let arrayLength = this.array.length;
-        if (arrayLength === 0)
+    buildTree(start, end) {
+        if (start > end)
             return null;
-        let mid = Math.floor((arrayLength - 1) / 2);
-        let root = new NodeQueue(this.array[mid]);
-        let queue = [{ node: root, range: [0, arrayLength] }];
-        let frontIndex = 0;
-        while (frontIndex < queue.length) {
-            let aux = queue[frontIndex];
-            let curr = aux.node;
-            let [s, e] = aux.range;
-            let index = s + Math.floor((e - s) / 2);
-            if (s < index) {
-                let midLeft = s + Math.floor((index - 1 - s) / 2);
-                curr.left = new NodeQueue(this.array[midLeft]);
-                queue.push({ node: curr.left, range: [s, index - 1] });
-            }
-            if (e > index) {
-                let midRight = s + Math.floor((index - 1 - s) / 2);
-                curr.right = new NodeQueue(this.array[midRight]);
-                queue.push({ node: curr.right, range: [index + 1, e] });
-            }
-            frontIndex++;
+        const mid = Math.floor((start + end) / 2);
+        const node = new NodeQueue(this.array[mid]);
+        node.left = this.buildTree(start, mid - 1);
+        node.right = this.buildTree(mid + 1, end);
+        return node;
+    }
+    getRoot() {
+        return this.root;
+    }
+    insert(key) {
+        const temp = new NodeQueue(key);
+        if (this.root === null) {
+            this.root = temp;
+            return temp;
         }
-        return root;
+        let parent = null;
+        let current = this.root;
+        while (current !== null) {
+            parent = current;
+            if (current.data < key) {
+                current = current.left;
+            }
+            else if (current.data > key) {
+                current = current.left;
+            }
+            else {
+                return null;
+            }
+        }
+        if (parent !== null) {
+            if (key < parent.data) {
+                parent.left = temp;
+            }
+            else {
+                parent.right = temp;
+            }
+        }
+        return this.root;
     }
 }
-//AKi(4)
 const test = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const node = new Tree(test);
-// console.log(node)
+node.insert(50);
+node.insert(0);
+// Print Tree
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
         return;
@@ -56,4 +72,4 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
 };
 // Imprimir a árvore
-prettyPrint(node.root);
+prettyPrint(node.getRoot());
