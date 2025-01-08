@@ -53,12 +53,61 @@ class Tree {
         }
         return this.root;
     }
+    deleteItem(value) {
+        let current = this.root;
+        let parent = null;
+        while (current !== null && current.data !== value) {
+            parent = current;
+            if (value < current.data) {
+                current = current.left;
+            }
+            else {
+                current = current.right;
+            }
+        }
+        if (current === null) {
+            return;
+        }
+        if (current.left === null && current.right === null) {
+            if (parent == null) {
+                this.root = null;
+            }
+            else if (parent.left == current) {
+                parent.left = null;
+            }
+            else if (parent.right == current) {
+                parent.right = null;
+            }
+        }
+        else if (current.left === null || current.right === null) {
+            const child = current.left !== null ? current.left : current.right;
+            if (parent == null) {
+                this.root = child;
+            }
+            else if (parent.left === current) {
+                parent.left = child;
+            }
+            else {
+                parent.right = child;
+            }
+        }
+        else {
+            let successor = current.right;
+            let successorParent = current;
+            while (successor.left !== null) {
+                successorParent = successor;
+                successor = successor.left;
+            }
+            current.data = successor.data;
+            if (successorParent.left === successor) {
+                successorParent.left = successor.right;
+            }
+            else {
+                successorParent.right = successor.right;
+            }
+        }
+    }
 }
-const test = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-const node = new Tree(test);
-node.insert(50);
-node.insert(0);
-// Print Tree
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
         return;
@@ -71,5 +120,10 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
         prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
 };
-// Imprimir a árvore
+const test = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const node = new Tree(test);
+node.insert(50);
+node.insert(0);
+prettyPrint(node.getRoot());
+node.deleteItem(4);
 prettyPrint(node.getRoot());
