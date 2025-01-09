@@ -71,30 +71,30 @@ class Tree {
         return this.root;
     }
     public deleteItem(value: number): void {
-    //     1. Localize o nó alvo:
-    //     - Percorra a árvore comparando `value` com o valor dos nós.
-    //     - Mantenha uma referência ao pai do nó atual.
-     
-    //  2. Se o nó alvo não tiver filhos (é uma folha):
-    //     - Vá até o pai do nó alvo.
-    //     - Defina o ponteiro do pai (esquerdo ou direito) para `null`.
-     
-    //  3. Se o nó alvo tiver apenas um filho:
-    //     - Obtenha o único filho (esquerdo ou direito).
-    //     - Vá até o pai do nó alvo.
-    //     - Substitua o nó alvo pelo seu único filho.
-     
-    //  4. Se o nó alvo tiver dois filhos:
-    //     - Encontre o sucessor in-order (o menor nó da subárvore direita):
-    //       - Vá até o filho direito do nó alvo.
-    //       - Continue caminhando para os filhos esquerdos até encontrar o menor nó.
-    //     - Substitua o valor do nó alvo pelo valor do sucessor.
-    //     - Remova o sucessor da subárvore.
-     
-    //  5. Atualize os ponteiros:
-    //     - Garanta que os ponteiros do pai do nó alvo sejam atualizados corretamente.
-    //     - Certifique-se de manter a propriedade da árvore binária de busca.
-     
+        //     1. Localize o nó alvo:
+        //     - Percorra a árvore comparando `value` com o valor dos nós.
+        //     - Mantenha uma referência ao pai do nó atual.
+
+        //  2. Se o nó alvo não tiver filhos (é uma folha):
+        //     - Vá até o pai do nó alvo.
+        //     - Defina o ponteiro do pai (esquerdo ou direito) para `null`.
+
+        //  3. Se o nó alvo tiver apenas um filho:
+        //     - Obtenha o único filho (esquerdo ou direito).
+        //     - Vá até o pai do nó alvo.
+        //     - Substitua o nó alvo pelo seu único filho.
+
+        //  4. Se o nó alvo tiver dois filhos:
+        //     - Encontre o sucessor in-order (o menor nó da subárvore direita):
+        //       - Vá até o filho direito do nó alvo.
+        //       - Continue caminhando para os filhos esquerdos até encontrar o menor nó.
+        //     - Substitua o valor do nó alvo pelo valor do sucessor.
+        //     - Remova o sucessor da subárvore.
+
+        //  5. Atualize os ponteiros:
+        //     - Garanta que os ponteiros do pai do nó alvo sejam atualizados corretamente.
+        //     - Certifique-se de manter a propriedade da árvore binária de busca.
+
 
         let current: NodeQueue | null = this.root;
         let parent: NodeQueue | null = null;
@@ -151,6 +151,19 @@ class Tree {
             }
         }
     }
+    public find(value: number): NodeQueue | null {
+
+        let current = this.root;
+        while (current !== null && current.data !== value) {
+            if (value < current.data) {
+                current = current.left
+            } else if (value > current.data) {
+                current = current.right;
+            }
+        }
+        return current;
+    }
+
 
 }
 // Print Tree
@@ -177,3 +190,4 @@ prettyPrint(node.getRoot());
 node.deleteItem(4);
 prettyPrint(node.getRoot());
 
+console.log(node.find(1));

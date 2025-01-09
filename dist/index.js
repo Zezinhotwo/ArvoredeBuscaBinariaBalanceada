@@ -107,6 +107,18 @@ class Tree {
             }
         }
     }
+    find(value) {
+        let current = this.root;
+        while (current !== null && current.data !== value) {
+            if (value < current.data) {
+                current = current.left;
+            }
+            else if (value > current.data) {
+                current = current.right;
+            }
+        }
+        return current;
+    }
 }
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
@@ -127,3 +139,4 @@ node.insert(0);
 prettyPrint(node.getRoot());
 node.deleteItem(4);
 prettyPrint(node.getRoot());
+console.log(node.find(1));
