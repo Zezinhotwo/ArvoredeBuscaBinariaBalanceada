@@ -1,4 +1,10 @@
 "use strict";
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _Queue_nodes;
 class NodeQueue {
     constructor(data) {
         this.left = null;
@@ -120,6 +126,37 @@ class Tree {
         return current;
     }
 }
+class Queue {
+    constructor(initialNode = null) {
+        _Queue_nodes.set(this, []);
+        if (initialNode !== null && initialNode !== undefined) {
+            __classPrivateFieldGet(this, _Queue_nodes, "f").push(initialNode);
+        }
+        else if (initialNode !== null) {
+            console.log("Can't set Null Element in the Queue");
+        }
+    }
+    enQueue(value) {
+        __classPrivateFieldGet(this, _Queue_nodes, "f").push(value);
+    }
+    deQueue(value) {
+        const index = __classPrivateFieldGet(this, _Queue_nodes, "f").findIndex(node => node.data === value.data);
+        if (index !== -1) {
+            return __classPrivateFieldGet(this, _Queue_nodes, "f").splice(index, 1)[0];
+        }
+        else {
+            console.log("This item isn’t in the Queue");
+            return null;
+        }
+    }
+    isEmpty() {
+        return __classPrivateFieldGet(this, _Queue_nodes, "f").length === 0;
+    }
+    printQueue() {
+        console.log(__classPrivateFieldGet(this, _Queue_nodes, "f").map(node => node.data));
+    }
+}
+_Queue_nodes = new WeakMap();
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
         return;

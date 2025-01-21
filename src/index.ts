@@ -1,8 +1,7 @@
-interface QueueNode {
-    node: NodeQueue;
-    range: number[];
-}
-
+// interface QueueNode {
+//     node: NodeQueue;
+//     range: number[];
+// }
 class NodeQueue {
     public data: number;
     left: NodeQueue | null = null;
@@ -164,7 +163,44 @@ class Tree {
         return current;
     }
 
+}
 
+class Queue {
+    // Declaração da propriedade privada com o tipo apropriado
+    #nodes: NodeQueue[] = [];
+
+    constructor(initialNode: NodeQueue | null = null) {
+        if (initialNode !== null && initialNode !== undefined) {
+            this.#nodes.push(initialNode);
+        } else if (initialNode !== null) {
+            console.log("Can't set Null Element in the Queue");
+        }
+    }
+
+    enQueue(value: NodeQueue): void {
+        this.#nodes.push(value);
+    }
+
+    deQueue(value: NodeQueue): NodeQueue | null {
+        // Verifica o índice do nó com base no atributo `data`
+        const index = this.#nodes.findIndex(node => node.data === value.data);
+        if (index !== -1) {
+            // Remove e retorna o nó encontrado
+            return this.#nodes.splice(index, 1)[0];
+        } else {
+            console.log("This item isn’t in the Queue");
+            return null;
+        }
+    }
+
+    isEmpty(): boolean {
+        return this.#nodes.length === 0;
+    }
+
+    printQueue(): void {
+        // Exibe os valores de `data` de cada nó
+        console.log(this.#nodes.map(node => node.data));
+    }
 }
 // Print Tree
 const prettyPrint = (node: NodeQueue | null, prefix = "", isLeft = true) => {
