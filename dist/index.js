@@ -134,6 +134,9 @@ class Tree {
                     if (callback && typeof callback === "function") {
                         callback(current);
                     }
+                    else if (!callback || typeof callback !== "function") {
+                        throw new Error("Precisa de um callback para este método");
+                    }
                     if (current.left) {
                         queue.push(current.left);
                     }
@@ -159,10 +162,10 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 const test = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const node = new Tree(test);
-node.levelOrder(nodes => console.log("visieted Nodes: " + nodes.data));
+// node.levelOrder(nodes => console.log("visieted Nodes: " + nodes.data));
 node.insert(50);
 node.insert(0);
 prettyPrint(node.getRoot());
-// node.deleteItem(4);
-// prettyPrint(node.getRoot());
-// console.log(node.find(1));
+node.deleteItem(4);
+prettyPrint(node.getRoot());
+console.log(node.find(1));

@@ -162,7 +162,7 @@ class Tree {
         }
         return current;
     }
-    public levelOrder(callback?: (node: NodeQueue) => void): NodeQueue[] {
+    public levelOrder(callback: (node: NodeQueue) => void): NodeQueue[] {
         const result: NodeQueue[] = [];
         const queue: (NodeQueue | null)[] = [];
 
@@ -179,6 +179,8 @@ class Tree {
                     result.push(current);
                     if (callback && typeof callback === "function") {
                         callback(current);
+                    } else if(!callback || typeof callback !== "function") { 
+                        throw new Error("Precisa de um callback para este método");
                     }
                     if (current.left) {
                         queue.push(current.left);
