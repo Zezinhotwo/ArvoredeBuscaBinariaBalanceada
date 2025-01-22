@@ -162,7 +162,35 @@ class Tree {
         }
         return current;
     }
+    public levelOrder(callback?: (node: NodeQueue) => void): NodeQueue[] {
+        const result: NodeQueue[] = [];
+        const queue: (NodeQueue | null)[] = [];
 
+        if (this.root === null) {
+            return result;
+        }
+
+        queue.push(this.root);
+
+        while (queue.length > 0) {
+            const current = queue.shift();
+            if (current != undefined)
+                if (current !== null) {
+                    result.push(current);
+                    if (callback && typeof callback === "function") {
+                        callback(current);
+                    }
+                    if (current.left) {
+                        queue.push(current.left);
+                    }
+                    if (current.right) {
+                        queue.push(current.right);
+                    }
+                }
+        }
+
+        return result;
+    }
 }
 
 // Print Tree
@@ -181,6 +209,7 @@ const prettyPrint = (node: NodeQueue | null, prefix = "", isLeft = true) => {
 
 const test: number[] = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const node = new Tree(test);
+node.levelOrder(nodes => console.log("visieted Nodes: " + nodes.data));
 node.insert(50);
 node.insert(0);
 

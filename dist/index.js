@@ -119,35 +119,30 @@ class Tree {
         }
         return current;
     }
-}
-class Queue {
-    constructor(initialNode = null) {
-        this.nodes = [];
-        if (initialNode !== null && initialNode !== undefined) {
-            this.nodes.push(initialNode);
+    levelOrder(callback) {
+        const result = [];
+        const queue = [];
+        if (this.root === null) {
+            return result;
         }
-        else if (initialNode !== null) {
-            console.log("Can't set Null Element in the Queue");
+        queue.push(this.root);
+        while (queue.length > 0) {
+            const current = queue.shift();
+            if (current != undefined)
+                if (current !== null) {
+                    result.push(current);
+                    if (callback && typeof callback === "function") {
+                        callback(current);
+                    }
+                    if (current.left) {
+                        queue.push(current.left);
+                    }
+                    if (current.right) {
+                        queue.push(current.right);
+                    }
+                }
         }
-    }
-    enQueue(value) {
-        this.nodes.push(value);
-    }
-    deQueue(value) {
-        const index = this.nodes.findIndex(node => node.data === value.data);
-        if (index !== -1) {
-            return this.nodes.splice(index, 1)[0];
-        }
-        else {
-            console.log("This item isn’t in the Queue");
-            return null;
-        }
-    }
-    isEmpty() {
-        return this.nodes.length === 0;
-    }
-    printQueue() {
-        console.log(this.nodes.map(node => node.data));
+        return result;
     }
 }
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -164,9 +159,10 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 const test = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const node = new Tree(test);
+node.levelOrder(nodes => console.log("visieted Nodes: " + nodes.data));
 node.insert(50);
 node.insert(0);
 prettyPrint(node.getRoot());
-node.deleteItem(4);
-prettyPrint(node.getRoot());
-console.log(node.find(1));
+// node.deleteItem(4);
+// prettyPrint(node.getRoot());
+// console.log(node.find(1));
