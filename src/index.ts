@@ -1,7 +1,3 @@
-// interface QueueNode {
-//     node: NodeQueue;
-//     range: number[];
-// }
 class NodeQueue {
     public data: number;
     left: NodeQueue | null = null;
@@ -70,31 +66,6 @@ class Tree {
         return this.root;
     }
     public deleteItem(value: number): void {
-        //     1. Localize o nó alvo:
-        //     - Percorra a árvore comparando `value` com o valor dos nós.
-        //     - Mantenha uma referência ao pai do nó atual.
-
-        //  2. Se o nó alvo não tiver filhos (é uma folha):
-        //     - Vá até o pai do nó alvo.
-        //     - Defina o ponteiro do pai (esquerdo ou direito) para `null`.
-
-        //  3. Se o nó alvo tiver apenas um filho:
-        //     - Obtenha o único filho (esquerdo ou direito).
-        //     - Vá até o pai do nó alvo.
-        //     - Substitua o nó alvo pelo seu único filho.
-
-        //  4. Se o nó alvo tiver dois filhos:
-        //     - Encontre o sucessor in-order (o menor nó da subárvore direita):
-        //       - Vá até o filho direito do nó alvo.
-        //       - Continue caminhando para os filhos esquerdos até encontrar o menor nó.
-        //     - Substitua o valor do nó alvo pelo valor do sucessor.
-        //     - Remova o sucessor da subárvore.
-
-        //  5. Atualize os ponteiros:
-        //     - Garanta que os ponteiros do pai do nó alvo sejam atualizados corretamente.
-        //     - Certifique-se de manter a propriedade da árvore binária de busca.
-
-
         let current: NodeQueue | null = this.root;
         let parent: NodeQueue | null = null;
         while (current !== null && current.data !== value) {
@@ -179,7 +150,7 @@ class Tree {
                     result.push(current);
                     if (callback && typeof callback === "function") {
                         callback(current);
-                    } else if(!callback || typeof callback !== "function") { 
+                    } else if (!callback || typeof callback !== "function") {
                         throw new Error("Precisa de um callback para este método");
                     }
                     if (current.left) {
@@ -192,6 +163,45 @@ class Tree {
         }
 
         return result;
+    }
+
+    public inOrder(callback: (node: NodeQueue) => void, node: NodeQueue | null = this.root): void {
+
+        if (node === null) {
+            return;
+        }
+        // Visita o filho da esquerda primeiro
+        this.inOrder(callback, node.left);
+
+        // Executa o callback no nó atual
+        callback(node);
+
+        // Visita o filho da direita por último
+        this.inOrder(callback, node.right);
+
+    }
+
+    public preOrder(callback: (node: NodeQueue) => void, node: NodeQueue | null = this.root): void {
+
+        if (node == null) {
+            return;
+        }
+
+        callback(node);
+        this.preOrder(callback, node.left);
+        this.preOrder(callback, node.right);
+    }
+
+    public postOrder(callback: (node: NodeQueue) => void, node: NodeQueue | null = this.root) {
+
+        if (node == null) {
+            return;
+        }
+
+        this.postOrder(callback, node.left);
+        this.postOrder(callback, node.right);
+        callback(node);
+
     }
 }
 
