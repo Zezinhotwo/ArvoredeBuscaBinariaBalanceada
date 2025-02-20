@@ -171,6 +171,43 @@ class Tree {
         this.postOrder(callback, node.right);
         callback(node);
     }
+    height(node) {
+        if (node === null)
+            return 0;
+        const leftHeight = this.height(node.left);
+        const rightHeight = this.height(node.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+    depth(data, node) {
+        if (node === null)
+            return -1;
+        if (node.data === data.data)
+            return 0;
+        if (data.data < node.data && node.left !== null) {
+            return this.depth(data, node.left) + 1;
+        }
+        if (data.data > node.data && node.right !== null) {
+            return this.depth(data, node.right) + 1;
+        }
+        return -1;
+    }
+    isBalanced() {
+        return this.checkBalanced(this.root);
+    }
+    checkBalanced(node) {
+        if (node === null)
+            return true;
+        const leftHeight = this.height(node.left);
+        const rightHeight = this.height(node.right);
+        if (Math.abs(leftHeight - rightHeight) > 1)
+            return false;
+        return this.checkBalanced(node.left) && this.checkBalanced(node.right);
+    }
+    rebalance() {
+        const sortedArray = [];
+        this.inOrder((node) => sortedArray.push(node.data));
+        this.root = this.buildTree(0, sortedArray.length - 1);
+    }
 }
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {

@@ -203,6 +203,53 @@ class Tree {
         callback(node);
 
     }
+
+    height(node: NodeQueue | null): number {
+        if (node === null) return 0;
+        const leftHeight = this.height(node.left);
+        const rightHeight = this.height(node.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    depth(data: NodeQueue, node: NodeQueue): number {
+        if (node === null) return -1; // Retorno para caso a árvore esteja vazia
+
+        if (node.data === data.data) return 0;
+
+        if (data.data < node.data && node.left !== null) {
+            return this.depth(data, node.left) + 1;
+        }
+
+        if (data.data > node.data && node.right !== null) {
+            return this.depth(data, node.right) + 1;
+        }
+
+        return -1; // Retorno para caso o nó não seja encontrado
+    }
+
+    public isBalanced(): boolean {
+        return this.checkBalanced(this.root);
+    }
+
+    private checkBalanced(node: NodeQueue | null): boolean {
+        if (node === null) return true;
+
+        const leftHeight = this.height(node.left);
+        const rightHeight = this.height(node.right);
+
+        if (Math.abs(leftHeight - rightHeight) > 1) return false;
+
+        return this.checkBalanced(node.left) && this.checkBalanced(node.right);
+    }
+
+    public rebalance(): void {
+        const sortedArray: number[] = [];
+
+        this.inOrder((node: NodeQueue) => sortedArray.push(node.data));
+
+        this.root = this.buildTree(0, sortedArray.length - 1);
+    }
+
 }
 
 // Print Tree
